@@ -1,0 +1,71 @@
+import unittest
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
+class TestLogin(unittest.TestCase):  # TEST SCENARIO
+
+    def setUp(self): 
+        self.browser = webdriver.Chrome(ChromeDriverManager().install())
+        
+    def test_a_success_Login(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://myappventure.herokuapp.com/login") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div[1]/main/div/div/form/label[1]/input").send_keys("testerjago@gmail.com") # isi email
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/label[2]/div[2]/input").send_keys("jago1234.") # isi USERNAME
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/div[4]/button").click() # klik tombol sign in
+        time.sleep(1)
+
+        # validasi
+        text_bawah = browser.find_element(By.XPATH,"/html/body/div[1]/main/div/div/form/div[2]").text
+
+        self.assertIn('Welcome', text_atas)
+        self.assertEqual(text_bawah, 'Anda Berhasil Login')
+
+    def test_b_Failed_Login(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://myappventure.herokuapp.com/login") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div[1]/main/div/div/form/label[1]/input").send_keys("testerjago@gmail.com") # isi email
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/label[2]/div[2]/input").send_keys("jago12345678.") # isi USERNAME
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/div[4]/button").click() # klik tombol sign in
+        time.sleep(1)
+        # validasi
+        text_bawah = browser.find_element(By.XPATH,"/html/body/div[1]/main/div/div/form/div[2]").text
+
+        self.assertIn('Welcome', text_atas)
+        self.assertEqual(text_bawah, 'Anda Berhasil Login')
+
+    def test_c_wrong_password(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://myappventure.herokuapp.com/login") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div[1]/main/div/div/form/label[1]/input").send_keys("testerjago@gmail.com") # isi email
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/label[2]/div[2]/input").send_keys("") # isi USERNAME
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/div[4]/button").click() # klik tombol sign in
+        time.sleep(1)
+    def test_d_wrong_username(self): 
+        # steps
+        browser = self.browser #buka web browser
+        browser.get("http://myappventure.herokuapp.com/login") # buka situs
+        time.sleep(3)
+        browser.find_element(By.XPATH,"/html/body/div[1]/main/div/div/form/label[1]/input").send_keys("") # isi email
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/label[2]/div[2]/input").send_keys("jago1234.") # isi USERNAME
+        time.sleep(5)
+        browser.find_element(By.XPATH,"/html/body/div/main/div/div/form/div[4]/button").click() # klik tombol sign in
+        time.sleep(1)
+
+if __name__ == "__main__": 
+    unittest.main()
